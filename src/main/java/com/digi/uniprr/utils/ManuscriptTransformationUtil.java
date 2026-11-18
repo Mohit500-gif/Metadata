@@ -1,0 +1,107 @@
+package com.digi.uniprr.utils;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import com.digi.uniprr.VO.ManuscriptListVO;
+import com.digi.uniprr.model.ManuScript;
+
+public class ManuscriptTransformationUtil {
+
+	public static ManuScript mapManuscriptVOToManuscriptModel(ManuscriptListVO manuscriptListVO) {
+
+		ManuScript manuscript = new ManuScript();
+
+		manuscript.setAuthorId(manuscriptListVO.getManuscriptAuthorId());
+		manuscript.setCreatedBy(manuscriptListVO.getCreatedBy());
+		manuscript.setCreatedOn(manuscriptListVO.getCreatedOn());
+		// manuscript.setJournal(manuscriptListVO);
+		manuscript.setJournalId(manuscriptListVO.getJournalId());
+		manuscript.setManuscriptCode(manuscriptListVO.getManuscripCode());
+		manuscript.setManuScriptId(manuscriptListVO.getManuScriptId());
+		// manuscript.setManuscriptStatusId(manuscriptListVO.getManuscriptStatusId());
+		manuscript.setManuscriptTitle(manuscriptListVO.getManuscripTitle());
+		manuscript.setManuscriptVersion(manuscriptListVO.getManuscriptVersion());
+		// manuscript.setStatusMaster(manuscriptListVO);
+		manuscript.setSubmissionDate(manuscriptListVO.getSubmissionDate());
+		manuscript.setSubmittedBy(manuscriptListVO.getSubmittedBy());
+		manuscript.setUpdatedBy(manuscriptListVO.getUpdatedBy());
+		manuscript.setUpdatedOn(manuscriptListVO.getUpdatedOn());
+		// manuscript.setUser();
+
+		return manuscript;
+	}
+
+	public static ManuscriptListVO mapManuscriptModelToManuscriptVO(ManuScript manuScript) {
+
+		String subjects = manuScript.getSubjectList().stream().map(obj -> obj.getJournalSubject().getJournalSubject()).collect(Collectors.joining(","));
+		ManuscriptListVO manuscriptListVO = new ManuscriptListVO();
+		manuscriptListVO.setCreatedBy(manuScript.getCreatedBy());
+		manuscriptListVO.setCreatedOn(manuScript.getCreatedOn());
+		manuscriptListVO.setJournalId(manuScript.getJournalId());
+		manuscriptListVO.setManuscriptChecklistResponse(manuScript.getManuscriptChecklistResponse());
+		manuscriptListVO.setManuscripCode(manuScript.getManuscriptCode());
+		manuscriptListVO.setDeclarationOfInterest(manuScript.getDeclarationOfInterest());
+		manuscriptListVO.setDeclarationOfInterestContent(manuScript.getDeclarationOfInterestContent());
+		manuscriptListVO.setManuscripShortTitle(manuScript.getManuscriptShortTitle());
+		manuscriptListVO.setManuscriptAuthorId(manuScript.getAuthorId());
+		manuscriptListVO.setManuScriptId(manuScript.getManuScriptId());
+		manuscriptListVO.setCopyrightAgreement(manuScript.getCopyrightAgreement());
+		manuscriptListVO.setCopyrightAgreementContent(manuScript.getCopyrightAgreementContent());
+		manuscriptListVO.setManuscriptAbstract(manuScript.getManuscriptAbstract());
+		manuscriptListVO.setManuscriptRunningHead(manuScript.getManuscriptRunningHead());
+		manuscriptListVO.setCommentForProduction(manuScript.getCommentForProduction());
+		//manuscriptListVO.setManuscriptStatusId(manuScript.getManuscriptStatusId());
+		manuscriptListVO.setManuStatusId(manuScript.getManuscriptStatusId());
+		manuscriptListVO.setManuscripTitle(manuScript.getManuscriptTitle());
+		manuscriptListVO.setKeywords(manuScript.getManuscriptKeywords());
+		manuscriptListVO.setManuscriptVersion(manuScript.getManuscriptVersion());
+		manuscriptListVO.setSubmissionDate(manuScript.getSubmissionDate());
+		manuscriptListVO.setSubmittedBy(manuScript.getSubmittedBy());
+		manuscriptListVO.setUpdatedBy(manuScript.getUpdatedBy());
+		manuscriptListVO.setUpdatedOn(manuScript.getUpdatedOn());
+		manuscriptListVO.setSalutation(manuScript.getUser().getSalutation().toString());
+		manuscriptListVO.setEmail(manuScript.getUser().getEmail());
+		manuscriptListVO.setOrcidId(manuScript.getUser().getOrcidId());
+		manuscriptListVO.setResearcherId(manuScript.getUser().getResearcherId());
+		manuscriptListVO.setMobileNumber(manuScript.getUser().getMobileNumber());
+		manuscriptListVO.setCountryCode(manuScript.getUser().getCountryCode());
+		manuscriptListVO.setTrialRegistrationNo(manuScript.getTrialRegistrationNo());
+		manuscriptListVO.setAddress(manuScript.getUser().getAddress() + " " +manuScript.getUser().getAddressTwo() +" " + manuScript.getUser().getAddressThree());
+		manuscriptListVO.setInstitution(manuScript.getUser().getInstitute());
+		manuscriptListVO.setAuthorName(manuScript.getUser().getFirstName() +" "+ manuScript.getUser().getLastName());
+		manuscriptListVO.setUserId(manuScript.getUser().getId());
+		manuscriptListVO.setIsChargeRequired(manuScript.getJournal().getChargeFlag());
+		manuscriptListVO.setSubjects(subjects);
+		if(manuScript.getManuscriptTypeDetails()!=null) {
+			manuscriptListVO.setManuScriptType(manuScript.getManuscriptTypeDetails().getManuscriptType());
+			manuscriptListVO.setWord(manuScript.getManuscriptTypeDetails().getManuscriptWords());
+			manuscriptListVO.setBlackAndWhiteFigure(manuScript.getManuscriptTypeDetails().getManuscriptBlackWhiteFigures());
+			manuscriptListVO.setColorFigures(manuScript.getManuscriptTypeDetails().getManuscriptColorFigures());
+			manuscriptListVO.setTable(manuScript.getManuscriptTypeDetails().getManuscriptTables());
+			manuscriptListVO.setPage(manuScript.getManuscriptTypeDetails().getManuscriptPages());
+		}
+		return manuscriptListVO;
+	}
+	
+	public static List<ManuScript> mapManuscriptListVOToManuscripListModel(List<ManuscriptListVO> manuscriptListVO){
+		
+		List<ManuScript> manuscriptList = new ArrayList<ManuScript>();
+		for(ManuscriptListVO vo : manuscriptListVO) {
+			
+			manuscriptList.add(mapManuscriptVOToManuscriptModel(vo));
+			
+		}
+		return manuscriptList;
+	} 
+	
+	public static List<ManuscriptListVO> mapManuscriptListModelToManuscriptListVO(List<ManuScript> manuScriptList){
+		
+		List<ManuscriptListVO> voList = new ArrayList<ManuscriptListVO>();
+		for(ManuScript manu : manuScriptList) {
+			voList.add(mapManuscriptModelToManuscriptVO(manu));
+		}
+		return voList;
+	}
+}
